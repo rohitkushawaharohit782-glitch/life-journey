@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Chat | Life Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007f;
+            --bright-silver: #e0e0e0;
+            --bg-deep: #050609;
+            --glass-white: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--bright-silver);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header with Clear History */
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(5, 6, 9, 0.95);
+            border-bottom: 2px solid var(--neon-pink);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-info img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; }
+
+        .btn-clear {
+            color: #ff4b2b;
+            text-decoration: none;
+            font-size: 11px;
+            border: 1px solid #ff4b2b;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-clear:hover { background: #ff4b2b; color: white; }
+
+        /* Chat Area */
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: radial-gradient(circle at bottom left, rgba(255, 0, 127, 0.03), transparent);
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sent {
+            align-self: flex-end;
+            background: var(--neon-pink);
+            color: white;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 5px 15px rgba(255, 0, 127, 0.2);
+        }
+
+        .received {
+            align-self: flex-start;
+            background: var(--glass-white);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Delete for Everyone Link */
+        .delete-btn {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+            text-align: right;
+        }
+        .delete-btn:hover { color: #fff; text-decoration: underline; }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            background: #000;
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 30px;
+            color: white;
+            outline: none;
+        }
+
+        .send-btn {
+            background: var(--neon-pink);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-header">
+        <div class="user-info">
+            <a href="/" style="text-decoration: none; color: var(--neon-pink); margin-right: 10px;">←</a>
+            <img src="{{ url_for('static', filename='uploads/' + receiver.profile_pic) }}">
+            <b style="color: #fff;">{{ receiver.username }}</b>
+        </div>
+        <a href="/clear_chat/{{ receiver.id }}" class="btn-clear" onclick="return confirm('Dono taraf se chat mita dein?')">Clear History</a>
+    </div>
+
+    <div id="chat-box">
+        {% for msg in messages %}
+            <div class="message {{ 'sent' if msg.sender_id == session['user_id'] else 'received' }}">
+                {{ msg.body }}
+                
+                {% if msg.sender_id == session['user_id'] %}
+                    <a href="/delete_message/{{ msg.id }}" class="delete-btn">Delete for everyone 🗑️</a>
+                {% endif %}
+                
+                <span style="font-size: 9px; opacity: 0.5; display: block; margin-top: 5px;">
+                    {{ msg.timestamp.strftime('%H:%M') }}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form class="input-area" method="POST">
+        <input type="text" name="message" class="input-box" placeholder="Type a message..." required autocomplete="off">
+        <button type="submit" class="send-btn">🚀</button>
+    </form>
+
+    <script>
+        // Auto Scroll to Bottom
+        var objDiv = document.getElementById("chat-box");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
+</body>
+</html>

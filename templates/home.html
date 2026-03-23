@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Life Journey | Pro Edition</title>
+    <style>
+        :root { --pink: #ff007f; --gold: #ffd700; --bg: #050609; }
+        body { background: var(--bg); color: #e0e0e0; font-family: 'Poppins', sans-serif; margin: 0; }
+        .navbar { display: flex; justify-content: space-between; padding: 15px 30px; border-bottom: 2px solid var(--pink); background: rgba(0,0,0,0.9); position: sticky; top:0; z-index:100; }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        
+        /* Search Bar Fix */
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-box input { flex: 1; padding: 12px; border-radius: 25px; border: 1px solid #333; background: #111; color: white; outline: none; }
+        
+        /* Profile Card */
+        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
+        .profile-pic { width: 100px; height: 100px; border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%; border: 3px solid var(--gold); object-fit: cover; }
+        
+        /* Post Card & Video Fix */
+        .post-card { background: rgba(255,255,255,0.05); border: 1px solid #222; border-radius: 20px; margin-bottom: 25px; overflow: hidden; }
+        .post-media video, .post-media img { width: 100%; max-height: 500px; display: block; object-fit: contain; background: #000; }
+        
+        .btn-follow { background: var(--pink); color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .stats { display: flex; justify-content: center; gap: 20px; margin: 15px 0; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <b style="color: var(--pink); font-size: 22px;">Life Journey</b>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <a href="/chat_list" style="text-decoration:none; font-size:20px;">✉️</a>
+            <a href="/logout" style="color:red; text-decoration:none; font-weight:bold; font-size:12px;">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form class="search-box" action="/search" method="POST">
+            <input type="text" name="search_query" placeholder="Doston ko dhoondhein (Search)..." required>
+            <button type="submit" class="btn-follow" style="padding:10px 20px;">Search</button>
+        </form>
+
+        {% if search_results %}
+        <div style="background: rgba(255,0,127,0.1); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--pink);">
+            <h4 style="margin:0 0 10px 0;">Search Results:</h4>
+            {% for r in search_results %}
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span><b>@{{ r.username }}</b></span>
+                    <a href="/follow/{{ r.id }}" class="btn-follow">Follow</a>
+                </div>
+            {% endfor %}
+            <a href="/" style="color:white; font-size:11px;">Clear Search</a>
+        </div>
+        {% endif %}
+
+        <div class="profile-card">
+            <img src="/static/uploads/{{ user.profile_pic }}" class="profile-pic">
+            <h2 style="margin:10px 0 5px;">{{ user.username }}</h2>
+            <div class="stats">
+                <span><b>{{ user.posts|length }}</b> Posts</span>
+                <span><b>{{ user.followers.count() }}</b> Followers</span>
+                <span><b>{{ user.followed.count() }}</b> Following</span>
+            </div>
+            <p style="color:#888; font-size:14px;">{{ user.bio }}</p>
+        </div>
+
+        <div style="background:#111; padding:15px; border-radius:15px; margin-bottom:25px;">
+            <h4 style="margin:0 0 10px 0; font-size:12px; color:var(--gold);">SUGGESTIONS</h4>
+            {% for u in all_users %}
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:14px;">{{ u.username }}</span>
+                <a href="/follow/{{ u.id }}" class="btn-follow">Follow +</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% for post in posts %}
+        <div class="post-card">
+            <div style="padding:15px; font-weight:bold;">@{{ post.author.username }}</div>
+            
+            <div class="post-media">
+                {% if post.image_file %}
+                    {% if post.image_file.lower().endswith(('.mp4', '.mov', '.avi')) %}
+                        <video controls style="width:100%;">
+                            <source src="/static/uploads/{{ post.image_file }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        <img src="/static/uploads/{{ post.image_file }}">
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div style="padding:15px;">
+                <p style="margin:0;">{{ post.content }}</p>
+                <div style="margin-top:15px; display:flex; gap:20px;">
+                    <a href="/like/{{ post.id }}" style="text-decoration:none;">✨ {{ post.likes|length }}</a>
+                    <a href="/chat/{{ post.author.id }}" style="text-decoration:none;">💬 Chat</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

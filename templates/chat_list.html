@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | Life Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007f;
+            --bright-silver: #e0e0e0;
+            --golden-glow: #ffd700;
+            --bg-deep: #050609;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--bright-silver);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 15px;
+        }
+
+        .chat-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .chat-card:hover {
+            background: rgba(255, 0, 127, 0.05);
+            border-color: var(--neon-pink);
+            transform: translateX(5px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-pic {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid var(--golden-glow);
+            object-fit: cover;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .btn-open {
+            background: var(--neon-pink);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .no-chats {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2 style="margin: 0; color: #fff;">Messages</h2>
+            <a href="/" style="text-decoration: none; color: var(--neon-pink); font-weight: bold;">← Home</a>
+        </div>
+
+        {% for friend in friends %}
+        <a href="/chat/{{ friend.id }}" class="chat-card">
+            <div class="user-info">
+                <img src="{{ url_for('static', filename='uploads/' + (friend.profile_pic if friend.profile_pic else 'default.jpg')) }}" class="user-pic">
+                <div>
+                    <b style="font-size: 16px;">{{ friend.username }}</b>
+                    <span style="display: block; font-size: 11px; color: #888;">Tap to start journey chat</span>
+                </div>
+            </div>
+            <div class="btn-open">CHAT</div>
+        </a>
+        {% else %}
+        <div class="no-chats">
+            <p>Abhi tak koi connections nahi hain.</p>
+            <a href="/" style="color: var(--neon-pink); text-decoration: none;">Doston ko follow karein!</a>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

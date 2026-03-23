@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Journey | Life Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007f;
+            --bright-silver: #e0e0e0;
+            --golden-glow: #ffd700;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --bg-deep: #050609;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--bright-silver);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .edit-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-glass);
+            padding: 40px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .profile-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%;
+            border: 2px solid var(--golden-glow);
+            margin: 0 auto 20px;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--neon-pink);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-glass);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 127, 0.05);
+        }
+
+        .btn-save {
+            width: 100%;
+            background: var(--neon-pink);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 0, 127, 0.3);
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.5);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #555;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .back-link:hover { color: var(--bright-silver); }
+
+        /* Custom File Input */
+        .file-input-wrapper {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="edit-card">
+        <img src="{{ url_for('static', filename='uploads/' + (user.profile_pic if user.profile_pic else 'default.jpg')) }}" class="profile-preview">
+        
+        <h2>Edit Profile</h2>
+
+        <form action="/edit_profile" method="POST">
+            <div class="form-group">
+                <label>Display Name</label>
+                <input type="text" name="username" value="{{ user.username }}" placeholder="Choose a cool name...">
+            </div>
+
+            <div class="form-group">
+                <label>Your Story (Bio)</label>
+                <textarea name="bio" rows="3" placeholder="Tell the world about your journey...">{{ user.bio }}</textarea>
+            </div>
+
+            <button type="submit" class="btn-save">Save Changes</button>
+        </form>
+
+        <a href="/" class="back-link">← Cancel and Go Back</a>
+    </div>
+
+</body>
+</html>

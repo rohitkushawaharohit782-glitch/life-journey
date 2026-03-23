@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join | Life Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-pink: #ff007f; --bright-silver: #e0e0e0; --glass-bg: rgba(255, 255, 255, 0.08); --bg-deep: #050609; }
+        body { background-color: var(--bg-deep); color: var(--bright-silver); font-family: 'Poppins', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .auth-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.15); padding: 40px; border-radius: 30px; width: 100%; max-width: 380px; text-align: center; }
+        .logo { font-size: 32px; font-weight: 900; color: var(--neon-pink); margin-bottom: 10px; }
+        p { color: #888; font-size: 13px; margin-bottom: 30px; }
+        input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 14px; border-radius: 12px; margin-bottom: 15px; outline: none; box-sizing: border-box; }
+        input:focus { border-color: var(--neon-pink); }
+        .btn-auth { width: 100%; background: var(--neon-pink); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .btn-auth:hover { box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); }
+        .links { margin-top: 20px; font-size: 12px; }
+        a { color: var(--neon-pink); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="logo">Join Us</div>
+        <p>Start your professional journey today.</p>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Choose Username" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Create Password" required>
+            <button type="submit" class="btn-auth">Register Now</button>
+        </form>
+        <div class="links">
+            <span style="color: #666;">Already have an account?</span> <a href="/login">Login</a>
+        </div>
+    </div>
+</body>
+</html>
