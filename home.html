@@ -1,52 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Life Journey | Home</title>
+    <title>Home | Life Journey</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root { --pink: #ff007f; --gold: #ffd700; --bg: #0b0c10; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; }
-        .navbar { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #333; position: sticky; top: 0; background: #000; z-index: 10; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
+        .nav { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #333; background: #000; position: sticky; top: 0; z-index: 10; }
         .container { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-        .profile-card { background: #1a1a1a; padding: 20px; border-radius: 20px; text-align: center; border: 1px solid #333; margin-bottom: 20px; }
+        .card { background: #1a1a1a; padding: 20px; border-radius: 20px; border: 1px solid #333; margin-bottom: 20px; text-align: center; }
         .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
         .btn-edit { color: var(--pink); text-decoration: none; font-size: 12px; border: 1px solid var(--pink); padding: 5px 15px; border-radius: 20px; display: inline-block; margin: 10px 0; }
         .post-box { background: #1a1a1a; padding: 15px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
         textarea { width: 100%; background: transparent; border: none; color: white; outline: none; font-size: 15px; resize: none; }
         .post-card { background: #1a1a1a; border-radius: 15px; margin-bottom: 20px; border: 1px solid #222; overflow: hidden; }
         .post-media img, .post-media video { width: 100%; display: block; }
-        .search-bar { width: 100%; padding: 10px; border-radius: 20px; background: #000; border: 1px solid #444; color: white; margin-bottom: 20px; box-sizing: border-box; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
+    <div class="nav">
         <b style="color:var(--pink)">Life Journey</b>
         <a href="/logout" style="color:#666; text-decoration:none; font-size:12px;">Logout</a>
-    </nav>
+    </div>
     <div class="container">
-        <form action="/search" method="POST"><input type="text" name="search_query" class="search-bar" placeholder="Search friends..."></form>
-        
-        {% if search_results %}
-        <div style="background:rgba(255,0,127,0.1); padding:10px; border-radius:10px; margin-bottom:20px;">
-            {% for r in search_results %}
-            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                <span>@{{ r.username }}</span>
-                <a href="/follow/{{ r.id }}" style="color:var(--gold); text-decoration:none;">Follow +</a>
-            </div>
-            {% endfor %}
-            <a href="/" style="font-size:10px; color:#888;">Clear Results</a>
-        </div>
-        {% endif %}
-
-        <div class="profile-card">
+        <div class="card">
             <img src="/static/uploads/{{ user.profile_pic }}" class="profile-pic">
             <h3 style="margin:5px 0;">{{ user.username }}</h3>
             <a href="/edit_profile" class="btn-edit">Edit Profile ⚙️</a>
             <p style="color:#888; font-size:13px;">{{ user.bio }}</p>
-            <div style="display:flex; justify-content:center; gap:15px; font-size:12px; color:var(--gold);">
-                <span><b>{{ user.posts|length }}</b> Posts</span>
-                <span><b>{{ user.followers.count() }}</b> Followers</span>
-            </div>
         </div>
 
         <div class="post-box">
@@ -54,7 +35,7 @@
                 <textarea name="content" placeholder="Share your journey..." rows="2" required></textarea>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
                     <input type="file" name="file" id="file" style="display:none;">
-                    <label for="file" style="cursor:pointer; color:var(--gold); font-size:12px;">📸 Media (Photo/Video)</label>
+                    <label for="file" style="cursor:pointer; color:var(--gold); font-size:12px;">📸 Media</label>
                     <button type="submit" style="background:var(--pink); color:white; border:none; padding:5px 20px; border-radius:10px; cursor:pointer;">Post</button>
                 </div>
             </form>
@@ -62,7 +43,7 @@
 
         {% for post in posts %}
         <div class="post-card">
-            <div style="padding:10px; font-size:14px; font-weight:bold;">@{{ post.author.username }}</div>
+            <div style="padding:10px; font-size:14px; font-weight:bold; color:var(--gold);">@{{ post.author.username }}</div>
             <div class="post-media">
                 {% if post.image_file %}
                     {% if post.image_file.lower().endswith(('.mp4', '.mov')) %}
