@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | Life Journey</title>
+    <style>
+        :root {
+            --pink: #ff007f;
+            --gold: #ffd700;
+            --bg: #0b0c10;
+            --card-bg: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .edit-container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .edit-container h2 {
+            color: var(--pink);
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .current-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            margin-left: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--pink);
+        }
+
+        input[type="file"] {
+            width: 100%;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: var(--pink);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover {
+            background: #cc0066;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="edit-container">
+        <h2>Edit Your Profile</h2>
+        
+        <img src="/static/uploads/{{ user.profile_pic }}" alt="Profile" class="current-pic">
+
+        <form action="/edit_profile" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label>Change Profile Picture</label>
+                <input type="file" name="profile_pic" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ user.username }}" placeholder="Choose a username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Bio (Tell your story)</label>
+                <textarea name="bio" rows="4" placeholder="Update your bio...">{{ user.bio }}</textarea>
+            </div>
+
+            <button type="submit" class="btn-save">Save Changes ✨</button>
+        </form>
+
+        <a href="/" class="back-link">← Cancel and Go Back</a>
+    </div>
+
+</body>
+</html>
